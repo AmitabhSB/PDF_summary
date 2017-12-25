@@ -37,12 +37,8 @@ main.py is a program written in python that takes input arguments as :
 
 1 Source PDF file with path 
 	Example : "C:\Users\AMITABH\Desktop\PDF_Summary\pdf\short _stories.pdf" 
-2 Path to the directory where PDF split files of every chapter are saved in .pdf format .
-	Example : "C:\Users\AMITABH\Desktop\PDF_Summary\pdf\pdf_split_files" 
- 3 Path to the directory where PDF split files of every chapter are saved in .txt format .
-	Example : "C:\Users\AMITABH\Desktop\PDF_Summary\Text_files"
-4 Path to the directory where Saummary of all the chapters are saved in .txt format .
-	Example : "C:/Users/AMITABH/Desktop/PDF_Summary/Summary//"
+2 Path to the output directory 
+	Example : "C:\Users\AMITABH\Desktop\PDF_Summary"
 
 and gives output Summary of every Chapter.
 
@@ -53,7 +49,7 @@ Step 1 : Go into PDF_Summary folder where you will find “main.py” python fil
 Step 2 : run command 
 
 Example :
- C:\Users\AMITABH\Desktop\PDF_Summary>main.py  “C:\Users\AMITABH\Desktop\PDF_Summary\pdf\short _stories.pdf" "C:\Users\AMITABH\Desktop\PDF_Summary\pdf\pdf_split_files" "C:\Users\AMITABH\Desktop\PDF_Summary\Text_files" "C:/Users/AMITABH/Desktop/PDF_Summary/Summary"
+ C:\Users\AMITABH\Desktop\PDF_Summary>main.py  “C:\Users\AMITABH\Desktop\PDF_Summary\pdf\short _stories.pdf" "C:\Users\AMITABH\Desktop\PDF_Summary" 
 
 Step 3 : You can check a Summary.txt file is created in Specified folder.
 
