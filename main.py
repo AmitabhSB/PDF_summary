@@ -6,11 +6,11 @@ from sumy.parsers.html import HtmlParser
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
-from sumy.summarizers.luhn import LuhnSummarizer
-from sumy.summarizers.text_rank import TextRankSummarizer
-from sumy.summarizers.lex_rank import LexRankSummarizer
-from sumy.summarizers.sum_basic import SumBasicSummarizer
-from sumy.summarizers.kl import KLSummarizer
+#from sumy.summarizers.luhn import LuhnSummarizer
+#from sumy.summarizers.text_rank import TextRankSummarizer
+#from sumy.summarizers.lex_rank import LexRankSummarizer
+#from sumy.summarizers.sum_basic import SumBasicSummarizer
+#from sumy.summarizers.kl import KLSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from cStringIO import StringIO
