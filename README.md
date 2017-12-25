@@ -5,6 +5,8 @@ Reads a PDF file of any book and writes summary of each chapter in 1 page.
 
 ##PDF_Summary 
 
+Updated version at : https://github.com/AmitabhSB/PDF_summary
+
 ##Installation  Requirements :
 
 (Tested on Windows 10)
