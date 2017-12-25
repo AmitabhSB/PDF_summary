@@ -5,12 +5,12 @@ from __future__ import division, print_function, unicode_literals
 from sumy.parsers.html import HtmlParser
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
-from sumy.summarizers.lsa import LsaSummarizer
-#from sumy.summarizers.luhn import LuhnSummarizer
-#from sumy.summarizers.text_rank import TextRankSummarizer
-#from sumy.summarizers.lex_rank import LexRankSummarizer
-#from sumy.summarizers.sum_basic import SumBasicSummarizer
-#from sumy.summarizers.kl import KLSummarizer
+from sumy.summarizers.lsa import LsaSummarizer as Lsa
+from sumy.summarizers.luhn import LuhnSummarizer as Luhn
+from sumy.summarizers.text_rank import TextRankSummarizer as TextRank
+from sumy.summarizers.lex_rank import LexRankSummarizer as LexRank
+from sumy.summarizers.sum_basic import SumBasicSummarizer as SumBasic
+from sumy.summarizers.kl import KLSummarizer as KLsum
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from cStringIO import StringIO
@@ -86,20 +86,22 @@ def convert(fname, pages=None):
     output.close
     return text
 
+
 ##########################  Main Program   ########################
 
 #Set parameters
 LANGUAGE = "English"
 SENTENCES_COUNT = 30
-sourcePDFFile = sys.argv[1]
-PDF_SummaryDir= sys.argv[2]
+sourcePDFFile = raw_input("Enter Soruce file with path \n")
+PDF_SummaryDir= raw_input("Enter Directory path \n")
+chooseAlgo = raw_input("Enter Algorithm you want to choose from options \n Luhn \n Lsa \n LexRank \n TextRank \n SumBasic \n KLsum\n")
+
 
 #Check if the directory PDF_summary exists or not
 if not os.path.exists(PDF_SummaryDir):
     os.makedirs(PDF_SummaryDir)
 
 #create directories for output files
-
 outputPDFDir =  os.path.dirname(PDF_SummaryDir + '\pdf\pdf_split_files\\')
 if not os.path.exists(outputPDFDir):
     os.makedirs(PDF_SummaryDir + '\pdf\pdf_split_files\\')
@@ -115,8 +117,10 @@ if not os.path.exists(outputSummaryDir):
 
 #Name prefix for split files
 outputNamePrefix = 'Split_Chapter_'
+timeSuffixSummary = str(time.strftime("%d-%m-%Y_%H.%M.%S"))
 targetPDFFile = 'temppdfsplitfile.pdf' # Temporary file
 
+   
 # Append backslash to output dir ofor pdf if necessary
 if not outputPDFDir.endswith('\\'):
     outputPDFDir = outputPDFDir + '\\'
@@ -199,19 +203,34 @@ if os.path.exists(sourcePDFFile):
             parser = PlaintextParser.from_file(outputTXTDir + txtFileName, Tokenizer(LANGUAGE))
             stemmer = Stemmer(LANGUAGE)
         #   Using LsaSummarizer to create summary
-        ##  We can choose Different algorithms to create summary by using different algorithms 
-            summarizer = LsaSummarizer(stemmer)
+        ##  Select from different algorithms to create summary by using different algorithms 
+            if chooseAlgo == 'Lsa' :
+                summarizer = Lsa(stemmer)
+            elif chooseAlgo == 'LexRank':
+                summarizer = LexRank(stemmer)
+            elif  chooseAlgo == 'TextRank':
+                summarizer = TextRank(stemmer)
+            elif  chooseAlgo == 'Luhn':
+                summarizer = Luhn(stemmer)
+            elif  chooseAlgo == 'SumBasic':
+                summarizer = SumBasic(stemmer)
+            elif  chooseAlgo == 'KLsum':
+                summarizer = KLsum(stemmer)
+            else :
+                chooseAlgo = 'Lsa'
+                summarizer = Lsa(stemmer)
+                print ( 'Wrong Algorithm selected , Summary created using Default Algorithm Lsa. ')                
+            
             summarizer.stop_words = get_stop_words(LANGUAGE)
         #   Open file in append mode so that summary will be added at the bottom of file 
-            summaryOutputFile = open(outputSummaryDir + 'SummaryFile' + str(time.strftime("%d_%m_%Y_%H_")) + '.txt','a')
+            summaryOutputFile = open(outputSummaryDir + chooseAlgo + '_Summary_File' + timeSuffixSummary + '.txt','a')
             for sentence in summarizer(parser.document, SENTENCES_COUNT):
         #   Check : print (sentence)
                 summaryOutputFile.write(str(sentence))
 
         #   To create Separation between Chapters
             summaryOutputFile.write('\n\n'+ 'Title : '+str(t)+'\n'+'\t')
-            summaryOutputFile.close()
-            
+            summaryOutputFile.close()           
         #   Check : print('Created TXT file: ' + outputSummaryDir + 'SummaryFile.txt')
                      
         i = prevPageNum
@@ -239,8 +258,8 @@ if os.path.exists(sourcePDFFile):
     txtOutputFile.close()
     pdfFileObj2.close()
 
-    # Delete temp file
-    os.unlink(targetPDFFile)
+# Delete temp file
+os.unlink(targetPDFFile)
 
 
 
