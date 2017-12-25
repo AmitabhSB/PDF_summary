@@ -28,7 +28,6 @@ import sys
 import xlrd
 
 
-
 # Helper class used to map pages numbers to bookmarks
 class BookmarkToPageMap(PyPDF2.PdfFileReader):
 
@@ -66,6 +65,7 @@ class BookmarkToPageMap(PyPDF2.PdfFileReader):
             result[title] = page_id_to_page_numbers.get(page_idnum, '???')
         return result
 
+#Functon to convert pdf into text 
 def convert(fname, pages=None):
     if not pages:
         pagenums = set()
@@ -92,10 +92,29 @@ def convert(fname, pages=None):
 LANGUAGE = "English"
 SENTENCES_COUNT = 30
 sourcePDFFile = sys.argv[1]
-outputPDFDir = sys.argv[2]
-outputTXTDir = sys.argv[3]
-outputSummaryDir = sys.argv[4]
-outputNamePrefix = 'Split_Chapter'
+PDF_SummaryDir= sys.argv[2]
+
+#Check if the directory PDF_summary exists or not
+if not os.path.exists(PDF_SummaryDir):
+    os.makedirs(PDF_SummaryDir)
+
+#create directories for output files
+
+outputPDFDir =  os.path.dirname(PDF_SummaryDir + '\pdf\pdf_split_files\\')
+if not os.path.exists(outputPDFDir):
+    os.makedirs(PDF_SummaryDir + '\pdf\pdf_split_files\\')
+
+    
+outputTXTDir = os.path.dirname(PDF_SummaryDir + '\Text_Files\\')
+if not os.path.exists(outputTXTDir):
+    os.makedirs(PDF_SummaryDir + '\Text_Files\\')
+            
+outputSummaryDir = os.path.dirname(PDF_SummaryDir + '\Summary\\')
+if not os.path.exists(outputSummaryDir):
+    os.makedirs(PDF_SummaryDir + '\Summary\\')
+
+#Name prefix for split files
+outputNamePrefix = 'Split_Chapter_'
 targetPDFFile = 'temppdfsplitfile.pdf' # Temporary file
 
 # Append backslash to output dir ofor pdf if necessary
