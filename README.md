@@ -2,6 +2,12 @@ Reads a PDF file of any book and writes summary of each chapter in 1 page.
 
 ##PDF_Summary 
 
+Assumption : 
+The book is not a scanned pdf.
+The book has bookmarks or has table of content page or the chapters are distinguishable.
+
+Read more about Pdf : https://www.abbyy.com/en-eu/finereader/pdf-types/
+
 Updated version can be found at https://github.com/AmitabhSB/PDF_summary
 
 Installation  Requirements :
@@ -47,17 +53,20 @@ Step 3 : Input Arguments :
 2 Path to the output directory 
 	Example : C:\Users\AMITABH\Desktop\PDF_Summary
 3 Choose Algorithm from the following to create Summary . Every Algorithm works differently so it may result different output.
-	Luhn 
-	Lsa
-	LexRank 
-	TextRank 
-	SumBasic
-	KLsum 
-LexRank
+Select Algorithm
+ press 1 and enter for Luhn.
+ press 2 and enter for Lsa.
+ press 3 and enter for LexRank.
+ press 4 and enter for TextRank.
+ press 5 and enter for SumBasic.
+ press 6 and enter for KLsum.
+ press 0 and enter to exit.
+0
+Wrong Algorithm selected.
+
 Note : You can read more about algorithms, References are given in Documentation
 Default Algorithm used is Lsa
 
 
 Step 4 : You can check a Summary is created in Summary folder with file name indicating algorithm used as prefix and time stamp as suffix.
-
 
