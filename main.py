@@ -24,7 +24,7 @@ import PyPDF2
 import os
 import time
 import shutil
-import sys
+import sys, traceback
 import xlrd
 
 
@@ -86,6 +86,17 @@ def convert(fname, pages=None):
     output.close
     return text
 
+def option(x):
+    return {
+        '1' : 'Luhn',
+        '2' : 'Lsa',
+        '3' : 'LexRank',
+        '4' : 'TextRank',
+        '5' : 'SumBasic',
+        '6' : 'KLsum',
+        '0' : 'exit',
+        }[x]
+
 
 ##########################  Main Program   ########################
 
@@ -93,8 +104,11 @@ def convert(fname, pages=None):
 LANGUAGE = "English"
 SENTENCES_COUNT = 30
 sourcePDFFile = raw_input("Enter Soruce file with path \n")
-PDF_SummaryDir= raw_input("Enter Directory path \n")
-chooseAlgo = raw_input("Enter Algorithm you want to choose from options \n Luhn \n Lsa \n LexRank \n TextRank \n SumBasic \n KLsum\n")
+if os.path.exists(sourcePDFFile):
+    print('Found source PDF file')
+    
+PDF_SummaryDir= raw_input("Enter Output Directory path \n")
+chooseAlgo = option(raw_input("Select Algorithm \n press 1 and enter for Luhn. \n press 2 and enter for Lsa. \n press 3 and enter for LexRank. \n press 4 and enter for TextRank. \n press 5 and enter for SumBasic.\n press 6 and enter for KLsum.\n press 0 and enter to exit. \n"))
 
 
 #Check if the directory PDF_summary exists or not
@@ -140,7 +154,7 @@ while not os.path.exists(sourcePDFFile):
     time.sleep(10)
     
 if os.path.exists(sourcePDFFile):
-    print('Found source PDF file')
+    #print('Found source PDF file')
     #Copy file to local working directory
     shutil.copy(sourcePDFFile, targetPDFFile)
 
@@ -217,9 +231,8 @@ if os.path.exists(sourcePDFFile):
             elif  chooseAlgo == 'KLsum':
                 summarizer = KLsum(stemmer)
             else :
-                chooseAlgo = 'Lsa'
-                summarizer = Lsa(stemmer)
-                print ( 'Wrong Algorithm selected , Summary created using Default Algorithm Lsa. ')                
+                print ( 'Wrong Algorithm selected.')
+                sys.exit(0)
             
             summarizer.stop_words = get_stop_words(LANGUAGE)
         #   Open file in append mode so that summary will be added at the bottom of file 
@@ -245,17 +258,7 @@ if os.path.exists(sourcePDFFile):
         pdfWriter.insertPage(pdfPage, page_idx)
     #   Check : print('Added page to PDF file: ' + prevPageName + ' - Page #: ' + str(i))
         page_idx+=1
-       
-    pdfFileName = outputNamePrefix + str(str(prevPageName).replace(':','_')).replace('*','_') + '.pdf'
-    txtFileName = outputNamePrefix + str(str(prevPageName).replace(':','_')).replace('*','_') + '.txt'
-    pdfOutputFile = open(outputPDFDir + pdfFileName, 'wb')
-    txtOutputFile = open(outputTXTDir + txtFileName, 'w')
-    pdfWriter.write(pdfOutputFile)
-    pdfOutputFile.close()
-    # Check : print('Created PDF file: ' + outputPDFDir + pdfFileName)
-    txtOutputFile.write(convert(outputPDFDir + pdfFileName))
-    # Check : print('Created TXT file: ' + outputTXTDir + txtFileName)
-    txtOutputFile.close()
+
     pdfFileObj2.close()
 
 # Delete temp file
